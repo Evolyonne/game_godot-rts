@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://ds9012surv"]
+
+[ext_resource type="Script" path="res://script/survivor.gd" id="1_surv"]
+[ext_resource type="Script" path="res://script/character_motor.gd" id="2_motor"]
+[ext_resource type="Script" path="res://script/flocking.gd" id="3_flock"]
+
+[sub_resource type="CapsuleShape2D" id="shape_surv"]
+radius = 10.0
+height = 20.0
+
+[node name="Survivor" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 5
+script = ExtResource("1_surv")
+
+[node name="CharacterMotor" type="Node" parent="."]
+script = ExtResource("2_motor")
+max_speed = 145.0
+
+[node name="Flocking" type="Node" parent="."]
+script = ExtResource("3_flock")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("shape_surv")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(1.0, 0.8, 0.2, 1.0)

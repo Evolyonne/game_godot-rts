@@ -1,0 +1,50 @@
+[gd_scene load_steps=8 format=3 uid="uid://main0001scn"]
+
+[ext_resource type="Script" path="res://script/main.gd" id="1_main"]
+[ext_resource type="Script" path="res://script/nav_grid.gd" id="2_nav"]
+[ext_resource type="PackedScene" path="res://scene/player.tscn" id="3_player"]
+[ext_resource type="PackedScene" path="res://scene/hud.tscn" id="4_hud"]
+[ext_resource type="PackedScene" path="res://scene/game_over.tscn" id="5_go"]
+[ext_resource type="PackedScene" path="res://scene/zombie.tscn" id="6_zombie"]
+
+[sub_resource type="TileSet" id="tileset_1"]
+tile_size = Vector2i(64, 64)
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_main")
+zombie_scene = ExtResource("6_zombie")
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = SubResource("tileset_1")
+format = 2
+
+[node name="NavGrid" type="Node" parent="."]
+script = ExtResource("2_nav")
+
+[node name="Player" parent="." instance=ExtResource("3_player")]
+position = Vector2(320, 320)
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+zoom = Vector2(1.2, 1.2)
+position_smoothing_enabled = true
+position_smoothing_speed = 5.0
+
+[node name="SpawnPoint1" type="Node2D" parent="."]
+position = Vector2(-400, -300)
+groups = ["spawn_point"]
+
+[node name="SpawnPoint2" type="Node2D" parent="."]
+position = Vector2(1000, -300)
+groups = ["spawn_point"]
+
+[node name="SpawnPoint3" type="Node2D" parent="."]
+position = Vector2(-400, 900)
+groups = ["spawn_point"]
+
+[node name="SpawnPoint4" type="Node2D" parent="."]
+position = Vector2(1000, 900)
+groups = ["spawn_point"]
+
+[node name="HUD" parent="." instance=ExtResource("4_hud")]
+
+[node name="GameOverScreen" parent="." instance=ExtResource("5_go")]

@@ -1,0 +1,40 @@
+[gd_scene load_steps=2 format=3 uid="uid://hud1234hud"]
+
+[ext_resource type="Script" path="res://script/hud.gd" id="1_hud"]
+
+[node name="HUD" type="CanvasLayer"]
+script = ExtResource("1_hud")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxTop" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HealthLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxTop"]
+text = "HP: 100"
+theme_override_font_sizes/font_size = 18
+
+[node name="WaveLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxTop"]
+text = "Vague: 0"
+theme_override_font_sizes/font_size = 18
+size_flags_horizontal = 3
+
+[node name="ScoreLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxTop"]
+text = "Score: 0"
+theme_override_font_sizes/font_size = 18
+
+[node name="RadioLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+text = ""
+theme_override_font_sizes/font_size = 14
+autowrap_mode = 3
+modulate = Color(0.4, 1.0, 0.4, 1.0)

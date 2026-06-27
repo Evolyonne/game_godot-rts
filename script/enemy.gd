@@ -30,16 +30,21 @@ var _current_path: Array[Vector2] = []
 @onready var _detection: EnemyDetection = $EnemyDetection
 @onready var _flocking:  Flocking       = $Flocking
 @onready var _utility:   UtilityAI      = $UtilityAI
+@onready var _health_bar: ProgressBar   = $HealthBar
 
 func _ready() -> void:
 	health = max_health
 	add_to_group("enemies")
 	HordeMemory.alert_triggered.connect(_on_horde_alerted)
+	_health_bar.max_value = max_health
+	_health_bar.value = health
 
 func _physics_process(delta: float) -> void:
 	_attack_timer -= delta
 	_path_timer   -= delta
 	_wander_timer -= delta
+	if state != State.ATTACK and velocity.length() > 10.0:
+    	look_at(global_position + velocity)
 
 	match state:
 		State.WANDER:     _tick_wander(delta)
@@ -60,7 +65,9 @@ func _tick_wander(delta: float) -> void:
 		_target = found
 		_transition(State.CHASE)
 		return
-	_apply_flocking_and_move(delta)
+	if _wander_timer <= 0.0:
+		_wander_timer = WANDER_CHANGE_T + randf() * 2.0
+		_apply_flocking_and_move(delta)
 
 func _tick_alerted(delta: float) -> void:
 	var candidates := _get_all_targets()
@@ -151,6 +158,7 @@ func _on_horde_alerted(_pos: Vector2) -> void:
 
 func take_damage(amount: int) -> void:
 	health = clampi(health - amount, 0, max_health)
+	_health_bar.value = health
 	HordeMemory.trigger_alert(global_position)
 	if health <= 0:
 		_die()

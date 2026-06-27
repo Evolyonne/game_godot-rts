@@ -23,7 +23,7 @@ func _ready() -> void:
 
 	var spawn_points: Array[Node2D] = []
 	for sp in get_children():
-		if sp.is_in_group("spawn_point"):
+		if sp.name.begins_with("SpawnPoint"):
 			spawn_points.append(sp as Node2D)
 
 	if zombie_scene:

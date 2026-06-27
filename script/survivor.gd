@@ -41,11 +41,14 @@ func _physics_process(delta: float) -> void:
 
 	_motor.move(move_dir if move_dir.length() > 0.1 else Vector2.ZERO, delta)
 
-	if _attack_timer <= 0.0:
-		var zombie := _find_nearest_enemy()
-		if zombie and global_position.distance_to(zombie.global_position) <= ATTACK_RANGE:
+	var zombie := _find_nearest_enemy()
+	if zombie:
+		look_at(zombie.global_position)
+		if _attack_timer <= 0.0 and global_position.distance_to(zombie.global_position) <= ATTACK_RANGE:
 			zombie.take_damage(ATTACK_DAMAGE)
 			_attack_timer = ATTACK_COOLDOWN
+	elif move_dir.length() > 0.1:
+		look_at(global_position + move_dir)
 
 func take_damage(amount: int) -> void:
 	health = clampi(health - amount, 0, max_health)

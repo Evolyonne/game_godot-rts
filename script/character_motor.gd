@@ -20,7 +20,7 @@ func move(direction: Vector2, delta: float) -> void:
 		# Quadratic ease-in: apply stronger force early, softer near target
 		var t := clampf(acceleration * delta / max_speed, 0.0, 1.0)
 		var ease_t := t * t * (3.0 - 2.0 * t)  # smoothstep
-		_body.velocity += diff * ease_t * (acceleration * delta / max_speed).sqrt() * 2.0
+		_body.velocity += diff * ease_t * sqrt(acceleration * delta / max_speed) * 2.0
 		_body.velocity = _body.velocity.limit_length(max_speed)
 	else:
 		var brake := friction * delta

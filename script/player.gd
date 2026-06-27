@@ -32,7 +32,6 @@ func _physics_process(delta: float) -> void:
 		_do_attack()
 		_attack_timer = ATTACK_COOLDOWN
 
-	# Rotate sprite toward mouse
 	look_at(get_global_mouse_position())
 
 func take_damage(amount: int) -> void:
@@ -60,7 +59,7 @@ func _do_attack() -> void:
 	shape.radius = ATTACK_RANGE
 	params.shape = shape
 	params.transform = Transform2D(0.0, global_position)
-	params.collision_mask = 4  # layer 3 = enemies
+	params.collision_mask = 4
 	var results := space.intersect_shape(params)
 	for r in results:
 		var body = r["collider"]

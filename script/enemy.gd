@@ -43,8 +43,6 @@ func _physics_process(delta: float) -> void:
 	_attack_timer -= delta
 	_path_timer   -= delta
 	_wander_timer -= delta
-	if state != State.ATTACK and velocity.length() > 10.0:
-    	look_at(global_position + velocity)
 
 	match state:
 		State.WANDER:     _tick_wander(delta)
@@ -54,7 +52,8 @@ func _physics_process(delta: float) -> void:
 		State.CALL_HORDE: _tick_call_horde(delta)
 		State.DEAD:       pass
 
-# ── Decision tree ticks ──────────────────────────────────────────────────────
+	if state != State.ATTACK and velocity.length() > 10.0:
+		look_at(global_position + velocity)
 
 func _tick_wander(delta: float) -> void:
 	if HordeMemory.is_alerted:
@@ -67,7 +66,7 @@ func _tick_wander(delta: float) -> void:
 		return
 	if _wander_timer <= 0.0:
 		_wander_timer = WANDER_CHANGE_T + randf() * 2.0
-		_apply_flocking_and_move(delta)
+	_apply_flocking_and_move(delta)
 
 func _tick_alerted(delta: float) -> void:
 	var candidates := _get_all_targets()
@@ -110,13 +109,10 @@ func _tick_attack(delta: float) -> void:
 		_attack_timer = ATTACK_COOLDOWN
 
 func _tick_call_horde(_delta: float) -> void:
-	# HordeMemory already broadcast; return to chase
 	if is_instance_valid(_target):
 		_transition(State.CHASE)
 	else:
 		_transition(State.ALERTED)
-
-# ── Helpers ──────────────────────────────────────────────────────────────────
 
 func _navigate_toward(world_pos: Vector2, delta: float) -> void:
 	var dist := global_position.distance_to(world_pos)
@@ -127,7 +123,7 @@ func _navigate_toward(world_pos: Vector2, delta: float) -> void:
 			_path_timer = PATH_REFRESH_T
 			var nav: NavGrid = get_tree().get_first_node_in_group("nav_grid")
 			if nav:
-				_current_path = nav.get_path(global_position, world_pos)
+				_current_path = nav.find_path(global_position, world_pos)
 		_motor.follow_path(_current_path, delta)
 
 	var peers := get_tree().get_nodes_in_group("enemies")

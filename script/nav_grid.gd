@@ -32,7 +32,7 @@ func _mark_physics_walls() -> void:
 			_astar.set_point_solid(cell, true)
 
 ## Returns a world-space path from start to goal.
-func get_path(from_world: Vector2, to_world: Vector2) -> Array[Vector2]:
+func find_path(from_world: Vector2, to_world: Vector2) -> Array[Vector2]:
 	if _astar == null:
 		return []
 	var from_cell := world_to_cell(from_world)

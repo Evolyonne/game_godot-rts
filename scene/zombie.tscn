@@ -1,43 +1,46 @@
-[gd_scene load_steps=7 format=3 uid="uid://cz5678zombie"]
+[gd_scene format=3 uid="uid://c056780ombie"]
 
-[ext_resource type="Script" path="res://script/enemy.gd" id="1_enemy"]
-[ext_resource type="Script" path="res://script/enemy_motor.gd" id="2_motor"]
-[ext_resource type="Script" path="res://script/enemy_detection.gd" id="3_detect"]
-[ext_resource type="Script" path="res://script/flocking.gd" id="4_flock"]
-[ext_resource type="Script" path="res://script/utility_ai.gd" id="5_utility"]
+[ext_resource type="Script" uid="uid://bpb5g3bbcaxu2" path="res://script/enemy.gd" id="1_enemy"]
+[ext_resource type="Script" uid="uid://bgtbio2blvwso" path="res://script/enemy_motor.gd" id="2_motor"]
+[ext_resource type="Script" uid="uid://botarxbr7otsi" path="res://script/enemy_detection.gd" id="3_detect"]
+[ext_resource type="Script" uid="uid://c24w8vjwa6m27" path="res://script/flocking.gd" id="4_flock"]
+[ext_resource type="Script" uid="uid://2ihojo7vicum" path="res://script/utility_ai.gd" id="5_utility"]
+[ext_resource type="Texture2D" uid="uid://bm8n5pgvs5s5a" path="res://PNG/Zombie 1/zoimbie1_hold.png" id="6_6hm1a"]
 
 [sub_resource type="CapsuleShape2D" id="shape_zombie"]
-radius = 10.0
-height = 20.0
+radius = 18.0
+height = 50.0
 
-[node name="Zombie" type="CharacterBody2D"]
+[node name="Zombie" type="CharacterBody2D" unique_id=941472550]
 collision_layer = 4
 collision_mask = 3
 script = ExtResource("1_enemy")
 
-[node name="EnemyMotor" type="Node" parent="."]
+[node name="EnemyMotor" type="Node" parent="." unique_id=1050836553]
 script = ExtResource("2_motor")
 
-[node name="EnemyDetection" type="Node" parent="."]
+[node name="EnemyDetection" type="Node" parent="." unique_id=202894051]
 script = ExtResource("3_detect")
 
-[node name="Flocking" type="Node" parent="."]
+[node name="Flocking" type="Node" parent="." unique_id=224865543]
 script = ExtResource("4_flock")
 
-[node name="UtilityAI" type="Node" parent="."]
+[node name="UtilityAI" type="Node" parent="." unique_id=404094524]
 script = ExtResource("5_utility")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=268293348]
 shape = SubResource("shape_zombie")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-modulate = Color(0.1, 0.6, 0.1, 1.0)
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=2117673156]
+modulate = Color(0.1, 0.6, 0.1, 1)
+position = Vector2(-2, 0)
+texture = ExtResource("6_6hm1a")
 
-[node name="HealthBar" type="ProgressBar" parent="."]
+[node name="HealthBar" type="ProgressBar" parent="." unique_id=89859969]
 offset_left = -14.0
-offset_top = -28.0
+offset_top = -31.0
 offset_right = 14.0
-offset_bottom = -22.0
+offset_bottom = -25.0
 max_value = 60.0
 value = 60.0
 show_percentage = false

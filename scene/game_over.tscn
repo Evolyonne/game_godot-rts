@@ -1,13 +1,12 @@
-[gd_scene load_steps=2 format=3 uid="uid://go5678over"]
+[gd_scene format=3 uid="uid://go5678over"]
 
-[ext_resource type="Script" path="res://script/game_over_screen.gd" id="1_go"]
+[ext_resource type="Script" uid="uid://b85ap13j7bdol" path="res://script/game_over_screen.gd" id="1_go"]
 
-[node name="GameOverScreen" type="CanvasLayer"]
+[node name="GameOverScreen" type="CanvasLayer" unique_id=1104320626]
 layer = 10
 script = ExtResource("1_go")
-visible = false
 
-[node name="Panel" type="Panel" parent="."]
+[node name="Panel" type="Panel" parent="." unique_id=1477098984]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -18,22 +17,25 @@ offset_top = -120.0
 offset_right = 200.0
 offset_bottom = 120.0
 
-[node name="VBox" type="VBoxContainer" parent="Panel"]
-anchors_preset = 15
+[node name="VBox" type="VBoxContainer" parent="Panel" unique_id=1525976709]
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 theme_override_constants/separation = 16
 
-[node name="GameOverLabel" type="Label" parent="Panel/VBox"]
+[node name="GameOverLabel" type="Label" parent="Panel/VBox" unique_id=1350004784]
+layout_mode = 2
+theme_override_font_sizes/font_size = 36
 text = "GAME OVER"
 horizontal_alignment = 1
-theme_override_font_sizes/font_size = 36
 
-[node name="ScoreLabel" type="Label" parent="Panel/VBox"]
+[node name="ScoreLabel" type="Label" parent="Panel/VBox" unique_id=174546562]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
 text = "Score: 0"
 horizontal_alignment = 1
-theme_override_font_sizes/font_size = 20
 
-[node name="RestartButton" type="Button" parent="Panel/VBox"]
-text = "Recommencer"
+[node name="RestartButton" type="Button" parent="Panel/VBox" unique_id=130564901]
+layout_mode = 2
 size_flags_horizontal = 4
+text = "Recommencer"

@@ -4,7 +4,7 @@ extends CharacterBody2D
 
 enum State { WANDER, ALERTED, CHASE, ATTACK, CALL_HORDE, DEAD }
 
-const ATTACK_RANGE    := 42.0
+const ATTACK_RANGE    := 72.0
 const ATTACK_DAMAGE   := 18
 const ATTACK_COOLDOWN := 0.9
 const CALL_HORDE_DIST := 300.0

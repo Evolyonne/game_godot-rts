@@ -3,8 +3,8 @@
 class_name EnemyMotor
 extends Node
 
-@export var max_speed: float = 70.0
-@export var acceleration: float = 400.0
+@export var max_speed: float = 130.0
+@export var acceleration: float = 650.0
 @export var friction: float = 300.0
 @export var arrive_radius: float = 80.0
 @export var stop_radius: float = 45.0

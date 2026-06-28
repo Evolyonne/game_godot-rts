@@ -5,9 +5,9 @@ extends Node
 signal wave_started(wave_number: int, zombie_count: int)
 signal wave_ended(wave_number: int)
 
-const BASE_ZOMBIES   := 5
-const WAVE_DELAY     := 8.0
-const SPAWN_INTERVAL := 0.4
+const BASE_ZOMBIES   := 12
+const WAVE_DELAY     := 5.0
+const SPAWN_INTERVAL := 0.3
 
 var current_wave: int = 0
 var zombies_this_wave: int = 0
@@ -27,7 +27,7 @@ func init(scene_root: Node, z_scene: PackedScene, points: Array[Node2D]) -> void
 	_scene_root = scene_root
 	_zombie_scene = z_scene
 	_spawn_node_refs = points
-	_wave_timer = 3.0  # short delay before first wave
+	_wave_timer = 2.0  # short delay before first wave
 
 func _process(delta: float) -> void:
 	if GameManager.is_game_over or _scene_root == null:

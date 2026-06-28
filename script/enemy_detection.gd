@@ -2,9 +2,9 @@
 class_name EnemyDetection
 extends Node
 
-@export var sight_range: float = 250.0
-@export var sight_angle_deg: float = 120.0
-@export var hearing_range: float = 150.0
+@export var sight_range: float = 450.0
+@export var sight_angle_deg: float = 160.0
+@export var hearing_range: float = 350.0
 
 var _owner_body: Node2D
 

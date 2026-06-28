@@ -29,7 +29,7 @@ const _WAVE_END_BAD := [
 ]
 
 func comment_wave_start(wave: int, count: int) -> void:
-	var line := _WAVE_START_LINES[(wave - 1) % _WAVE_START_LINES.size()]
+	var line: String = _WAVE_START_LINES[(wave - 1) % _WAVE_START_LINES.size()]
 	var text := "[Vague %d] %d zombies — %s" % [wave, count, line]
 	if FileAccess.file_exists(LLAMA_PATH):
 		var prompt := "[Radio static] Wave %d incoming! %d zombies spotted. Brief survival tip in one sentence:" % [wave, count]
@@ -39,7 +39,7 @@ func comment_wave_start(wave: int, count: int) -> void:
 
 func comment_wave_end(wave: int, perf: float) -> void:
 	var lines := _WAVE_END_GOOD if perf > 0.4 else _WAVE_END_BAD
-	var text := lines[wave % lines.size()]
+	var text: String = lines[wave % lines.size()]
 	if FileAccess.file_exists(LLAMA_PATH):
 		var rating := "good" if perf > 0.6 else ("average" if perf > 0.3 else "poor")
 		var prompt := "[Radio static] Wave %d cleared. Survivor performance: %s. Encouraging comment in one sentence:" % [wave, rating]

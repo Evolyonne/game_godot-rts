@@ -2,10 +2,11 @@
 class_name Survivor
 extends CharacterBody2D
 
-const FOLLOW_DIST    := 80.0
-const ATTACK_RANGE   := 55.0
-const ATTACK_DAMAGE  := 20
-const ATTACK_COOLDOWN := 1.0
+const FOLLOW_DIST     := 80.0
+const ATTACK_RANGE    := 200.0
+const BULLET_DAMAGE   := 20
+const BULLET_SPEED    := 460.0
+const ATTACK_COOLDOWN := 0.8
 
 @export var max_health: int = 60
 
@@ -16,6 +17,8 @@ var _attack_timer: float = 0.0
 @onready var _flocking: Flocking       = $Flocking
 
 signal died()
+
+const _BULLET_SCENE := preload("res://scene/bullet.tscn")
 
 func _ready() -> void:
 	health = max_health
@@ -45,7 +48,7 @@ func _physics_process(delta: float) -> void:
 	if zombie:
 		look_at(zombie.global_position)
 		if _attack_timer <= 0.0 and global_position.distance_to(zombie.global_position) <= ATTACK_RANGE:
-			zombie.take_damage(ATTACK_DAMAGE)
+			_shoot(zombie)
 			_attack_timer = ATTACK_COOLDOWN
 	elif move_dir.length() > 0.1:
 		look_at(global_position + move_dir)
@@ -58,6 +61,16 @@ func take_damage(amount: int) -> void:
 
 func get_health_ratio() -> float:
 	return float(health) / float(max_health)
+
+func _shoot(target: Node2D) -> void:
+	var b: Bullet = _BULLET_SCENE.instantiate()
+	b.damage = BULLET_DAMAGE
+	b.speed = BULLET_SPEED
+	b.direction = (target.global_position - global_position).normalized()
+	b.collision_mask = 4
+	get_tree().current_scene.add_child(b)
+	b.global_position = global_position
+	b.body_entered.connect(b._on_body_entered)
 
 func _find_player() -> Node2D:
 	var players := get_tree().get_nodes_in_group("players")

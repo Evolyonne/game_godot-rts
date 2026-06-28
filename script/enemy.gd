@@ -1,22 +1,17 @@
 ## Zombie orchestrator — decision tree + flocking + utility AI.
-##
-## Decision tree:
-##   WANDER → (hears/sees target) → ALERTED → CHASE → ATTACK
-##                                                  ↓
-##                                            CALL_HORDE (broadcast)
 class_name Enemy
 extends CharacterBody2D
 
 enum State { WANDER, ALERTED, CHASE, ATTACK, CALL_HORDE, DEAD }
 
-const ATTACK_RANGE    := 38.0
-const ATTACK_DAMAGE   := 10
-const ATTACK_COOLDOWN := 1.2
+const ATTACK_RANGE    := 42.0
+const ATTACK_DAMAGE   := 18
+const ATTACK_COOLDOWN := 0.9
 const CALL_HORDE_DIST := 300.0
 const PATH_REFRESH_T  := 0.4
 const WANDER_CHANGE_T := 2.5
 
-@export var max_health: int = 60
+@export var max_health: int = 120
 
 var health: int
 var state: State = State.WANDER
@@ -26,11 +21,11 @@ var _path_timer: float = 0.0
 var _wander_timer: float = 0.0
 var _current_path: Array[Vector2] = []
 
-@onready var _motor:     EnemyMotor     = $EnemyMotor
-@onready var _detection: EnemyDetection = $EnemyDetection
-@onready var _flocking:  Flocking       = $Flocking
-@onready var _utility:   UtilityAI      = $UtilityAI
-@onready var _health_bar: ProgressBar   = $HealthBar
+@onready var _motor:      EnemyMotor     = $EnemyMotor
+@onready var _detection:  EnemyDetection = $EnemyDetection
+@onready var _flocking:   Flocking       = $Flocking
+@onready var _utility:    UtilityAI      = $UtilityAI
+@onready var _health_bar: ProgressBar    = $HealthBar
 
 func _ready() -> void:
 	health = max_health

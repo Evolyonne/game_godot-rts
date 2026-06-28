@@ -1,9 +1,9 @@
 class_name Player
 extends CharacterBody2D
 
-const ATTACK_RANGE := 50.0
-const ATTACK_DAMAGE := 30
-const ATTACK_COOLDOWN := 0.5
+const ATTACK_COOLDOWN := 0.25
+const BULLET_DAMAGE   := 30
+const BULLET_SPEED    := 520.0
 
 @export var max_health: int = 100
 
@@ -17,6 +17,8 @@ var _attack_timer: float = 0.0
 signal health_changed(current: int, maximum: int)
 signal died()
 
+const _BULLET_SCENE := preload("res://scene/bullet.tscn")
+
 func _ready() -> void:
 	health = max_health
 	add_to_group("players")
@@ -29,7 +31,7 @@ func _physics_process(delta: float) -> void:
 
 	_attack_timer -= delta
 	if _input.is_attacking() and _attack_timer <= 0.0:
-		_do_attack()
+		_shoot()
 		_attack_timer = ATTACK_COOLDOWN
 
 	look_at(get_global_mouse_position())
@@ -52,16 +54,12 @@ func heal(amount: int) -> void:
 func get_health_ratio() -> float:
 	return float(health) / float(max_health)
 
-func _do_attack() -> void:
-	var space := get_world_2d().direct_space_state
-	var params := PhysicsShapeQueryParameters2D.new()
-	var shape := CircleShape2D.new()
-	shape.radius = ATTACK_RANGE
-	params.shape = shape
-	params.transform = Transform2D(0.0, global_position)
-	params.collision_mask = 4
-	var results := space.intersect_shape(params)
-	for r in results:
-		var body = r["collider"]
-		if body.has_method("take_damage"):
-			body.take_damage(ATTACK_DAMAGE)
+func _shoot() -> void:
+	var b: Bullet = _BULLET_SCENE.instantiate()
+	b.damage = BULLET_DAMAGE
+	b.speed = BULLET_SPEED
+	b.direction = (get_global_mouse_position() - global_position).normalized()
+	b.collision_mask = 4
+	get_tree().current_scene.add_child(b)
+	b.global_position = global_position
+	b.body_entered.connect(b._on_body_entered)

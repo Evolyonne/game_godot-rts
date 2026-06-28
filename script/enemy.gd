@@ -111,7 +111,7 @@ func _tick_call_horde(_delta: float) -> void:
 
 func _navigate_toward(world_pos: Vector2, delta: float) -> void:
 	var dist := global_position.distance_to(world_pos)
-	if dist < 90.0:
+	if dist < 200.0:
 		_motor.seek(world_pos, delta)
 	else:
 		if _path_timer <= 0.0:
@@ -119,7 +119,12 @@ func _navigate_toward(world_pos: Vector2, delta: float) -> void:
 			var nav: NavGrid = get_tree().get_first_node_in_group("nav_grid")
 			if nav:
 				_current_path = nav.find_path(global_position, world_pos)
-		_motor.follow_path(_current_path, delta)
+			else:
+				_current_path.clear()
+		if _current_path.is_empty():
+			_motor.seek(world_pos, delta)
+		else:
+			_motor.follow_path(_current_path, delta)
 
 	var peers := get_tree().get_nodes_in_group("enemies")
 	var flock_vel := _flocking.compute(self, peers)

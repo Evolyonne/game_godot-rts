@@ -1,4 +1,9 @@
 ## Zombie orchestrator — decision tree + flocking + utility AI.
+##
+## Decision tree:
+##   WANDER (waypoints) → (détecte cible) → ALERTED → CHASE → ATTACK
+##                                                         ↓
+##                                                   CALL_HORDE (broadcast)
 class_name Enemy
 extends CharacterBody2D
 
@@ -9,7 +14,7 @@ const ATTACK_DAMAGE   := 18
 const ATTACK_COOLDOWN := 0.9
 const CALL_HORDE_DIST := 300.0
 const PATH_REFRESH_T  := 0.4
-const WANDER_CHANGE_T := 2.5
+const WAYPOINT_REACH  := 60.0
 
 @export var max_health: int = 120
 
@@ -18,8 +23,11 @@ var state: State = State.WANDER
 var _target: Node2D = null
 var _attack_timer: float = 0.0
 var _path_timer: float = 0.0
-var _wander_timer: float = 0.0
 var _current_path: Array[Vector2] = []
+
+# Waypoint patrol
+var _waypoints: Array[Vector2] = []
+var _waypoint_index: int = 0
 
 @onready var _motor:      EnemyMotor     = $EnemyMotor
 @onready var _detection:  EnemyDetection = $EnemyDetection
@@ -33,11 +41,21 @@ func _ready() -> void:
 	HordeMemory.alert_triggered.connect(_on_horde_alerted)
 	_health_bar.max_value = max_health
 	_health_bar.value = health
+	_build_waypoints()
+
+func _build_waypoints() -> void:
+	var root := get_tree().current_scene
+	if root == null:
+		return
+	for child in root.get_children():
+		if child.name.begins_with("SpawnPoint"):
+			_waypoints.append((child as Node2D).global_position)
+	if _waypoints.size() > 0:
+		_waypoint_index = randi() % _waypoints.size()
 
 func _physics_process(delta: float) -> void:
 	_attack_timer -= delta
 	_path_timer   -= delta
-	_wander_timer -= delta
 
 	match state:
 		State.WANDER:     _tick_wander(delta)
@@ -59,9 +77,17 @@ func _tick_wander(delta: float) -> void:
 		_target = found
 		_transition(State.CHASE)
 		return
-	if _wander_timer <= 0.0:
-		_wander_timer = WANDER_CHANGE_T + randf() * 2.0
-	_apply_flocking_and_move(delta)
+	_patrol_waypoints(delta)
+
+func _patrol_waypoints(delta: float) -> void:
+	if _waypoints.is_empty():
+		_apply_flocking_wander(delta)
+		return
+	var wp := _waypoints[_waypoint_index]
+	if global_position.distance_to(wp) < WAYPOINT_REACH:
+		_waypoint_index = (_waypoint_index + 1) % _waypoints.size()
+		wp = _waypoints[_waypoint_index]
+	_navigate_toward(wp, delta)
 
 func _tick_alerted(delta: float) -> void:
 	var candidates := _get_all_targets()
@@ -104,6 +130,7 @@ func _tick_attack(delta: float) -> void:
 		_attack_timer = ATTACK_COOLDOWN
 
 func _tick_call_horde(_delta: float) -> void:
+	HordeMemory.trigger_alert(global_position)
 	if is_instance_valid(_target):
 		_transition(State.CHASE)
 	else:
@@ -131,7 +158,7 @@ func _navigate_toward(world_pos: Vector2, delta: float) -> void:
 	velocity += flock_vel * 40.0 * delta
 	velocity = velocity.limit_length(_motor.max_speed)
 
-func _apply_flocking_and_move(delta: float) -> void:
+func _apply_flocking_wander(delta: float) -> void:
 	var peers := get_tree().get_nodes_in_group("enemies")
 	var flock_vel := _flocking.compute(self, peers)
 	_motor.wander(delta)

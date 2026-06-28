@@ -8,8 +8,8 @@
 [ext_resource type="Texture2D" uid="uid://bm8n5pgvs5s5a" path="res://PNG/Zombie 1/zoimbie1_hold.png" id="6_6hm1a"]
 
 [sub_resource type="CapsuleShape2D" id="shape_zombie"]
-radius = 18.0
-height = 50.0
+radius = 32.0
+height = 80.0
 
 [node name="Zombie" type="CharacterBody2D" unique_id=941472550]
 collision_layer = 4
@@ -33,14 +33,14 @@ shape = SubResource("shape_zombie")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=2117673156]
 modulate = Color(0.1, 0.6, 0.1, 1)
-position = Vector2(-2, 0)
+scale = Vector2(1.8285713, 1.4883721)
 texture = ExtResource("6_6hm1a")
 
 [node name="HealthBar" type="ProgressBar" parent="." unique_id=89859969]
-offset_left = -14.0
-offset_top = -31.0
-offset_right = 14.0
-offset_bottom = -25.0
+offset_left = -24.0
+offset_top = -64.0
+offset_right = 24.0
+offset_bottom = -50.0
 max_value = 60.0
 value = 60.0
 show_percentage = false

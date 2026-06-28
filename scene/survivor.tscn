@@ -6,8 +6,8 @@
 [ext_resource type="Texture2D" uid="uid://dpw7vyp6vxjp4" path="res://PNG/Survivor 1/survivor1_machine.png" id="4_4y5p7"]
 
 [sub_resource type="CapsuleShape2D" id="shape_surv"]
-radius = 17.0
-height = 56.0
+radius = 24.0
+height = 80.0
 
 [node name="Survivor" type="CharacterBody2D" unique_id=1418227149]
 collision_layer = 2
@@ -22,9 +22,10 @@ max_speed = 145.0
 script = ExtResource("3_flock")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=965319093]
+position = Vector2(-8, 0)
 shape = SubResource("shape_surv")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=478509288]
 modulate = Color(1, 0.8, 0.2, 1)
-position = Vector2(8, -1)
+scale = Vector2(1.254902, 1.4883721)
 texture = ExtResource("4_4y5p7")

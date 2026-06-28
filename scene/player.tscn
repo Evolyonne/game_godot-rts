@@ -6,8 +6,8 @@
 [ext_resource type="Texture2D" uid="uid://ys0nu78csdhx" path="res://PNG/Hitman 1/hitman1_gun.png" id="4_ct4mp"]
 
 [sub_resource type="CapsuleShape2D" id="shape_player"]
-radius = 16.0
-height = 52.0
+radius = 27.0
+height = 80.0
 
 [node name="Player" type="CharacterBody2D" unique_id=220861078]
 collision_layer = 2
@@ -20,17 +20,19 @@ script = ExtResource("2_input")
 script = ExtResource("3_motor")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=788559686]
+position = Vector2(-11, 0)
 shape = SubResource("shape_player")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=870661479]
 modulate = Color(0.2, 0.6, 1, 1)
-position = Vector2(9, 0)
+position = Vector2(0, 5.421011e-20)
+scale = Vector2(1.3061224, 1.4883722)
 texture = ExtResource("4_ct4mp")
 
 [node name="HealthBar" type="ProgressBar" parent="." unique_id=426606668]
-offset_left = -16.0
-offset_top = -37.0
-offset_right = 16.0
-offset_bottom = -29.0
+offset_left = -21.0
+offset_top = -54.0
+offset_right = 22.0
+offset_bottom = -42.0
 value = 100.0
 show_percentage = false

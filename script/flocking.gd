@@ -23,19 +23,22 @@ func compute(owner_body: CharacterBody2D, peers: Array) -> Vector2:
 	for peer in peers:
 		if peer == owner_body or not is_instance_valid(peer):
 			continue
-		var offset := owner_body.global_position - peer.global_position
-		var dist := offset.length()
+		var p := peer as CharacterBody2D
+		if p == null:
+			continue
+		var offset: Vector2 = owner_body.global_position - p.global_position
+		var dist: float = offset.length()
 
 		if dist < separation_radius and dist > 0.0:
 			sep += offset.normalized() / dist
 			sep_count += 1
 
 		if dist < alignment_radius:
-			ali += peer.velocity
+			ali += p.velocity
 			ali_count += 1
 
 		if dist < cohesion_radius:
-			coh += peer.global_position
+			coh += p.global_position
 			coh_count += 1
 
 	var result := Vector2.ZERO

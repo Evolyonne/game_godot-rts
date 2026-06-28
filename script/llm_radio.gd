@@ -11,18 +11,12 @@ const MAX_TOKENS := 60
 var _is_busy: bool = false
 
 func comment_wave_start(wave: int, count: int) -> void:
-	var prompt := (
-		"[Radio static] Wave %d incoming! %d zombies spotted. "
-		"Brief survival tip in one sentence:" % [wave, count]
-	)
+	var prompt := "[Radio static] Wave %d incoming! %d zombies spotted. Brief survival tip in one sentence:" % [wave, count]
 	_generate_async(prompt)
 
 func comment_wave_end(wave: int, perf: float) -> void:
 	var rating := "good" if perf > 0.6 else ("average" if perf > 0.3 else "poor")
-	var prompt := (
-		"[Radio static] Wave %d cleared. Survivor performance: %s. "
-		"Encouraging comment in one sentence:" % [wave, rating]
-	)
+	var prompt := "[Radio static] Wave %d cleared. Survivor performance: %s. Encouraging comment in one sentence:" % [wave, rating]
 	_generate_async(prompt)
 
 func comment_player_low_health() -> void:
